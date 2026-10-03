@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Notas dos Alunos</h2>
+    {% for aluno in alunos %}
+        <div class="card">
+            <h3 style="margin-top: 0; color: #ba1a1a;">{{ aluno.nome }}</h3>
+            <table>
+                <tr>
+                    <th>Matéria</th>
+                    <th>Nota</th>
+                </tr>
+                {% for materia, nota in aluno.materias.items() %}
+                <tr>
+                    <td>{{ materia }}</td>
+                    <td><strong>{{ nota }}</strong></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+{% endblock %}

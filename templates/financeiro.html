@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Financeiro do Pelotão</h2>
+    
+    <div class="card" style="border-left: 5px solid #28a745;">
+        <h3 style="margin: 0; color: #28a745;">Saldo em Caixa: R$ {{ "%.2f"|format(financeiro.saldo_atual) }}</h3>
+    </div>
+    
+    <h3>Histórico de Gastos / Missões</h3>
+    <table>
+        <tr>
+            <th>Missão / Gasto</th>
+            <th>Valor (R$)</th>
+        </tr>
+        {% for gasto in financeiro.gastos %}
+        <tr>
+            <td>{{ gasto.missao }}</td>
+            <td style="color: #dc3545; font-weight: bold;">- R$ {{ "%.2f"|format(gasto.valor) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
