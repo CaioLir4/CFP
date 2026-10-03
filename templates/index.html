@@ -1,13 +1,81 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="card" style="text-align: center; padding: 40px;">
-        <h1>Bem-vindo ao Sistema CFP BM</h1>
-        <p style="font-size: 1.2em; color: #555;">Acompanhamento de evolução do Curso de Formação de Bombeiros Militares.</p>
-        <p>Utilize o menu acima para navegar pelos módulos:</p>
-        <ul style="text-align: left; display: inline-block; margin-top: 20px;">
-            <li>📄 <strong>Notas dos Alunos:</strong> Consulte o desempenho individual.</li>
-            <li>🕒 <strong>Carga Horária:</strong> Acompanhe as horas-aula cumpridas.</li>
-            <li>💰 <strong>Financeiro:</strong> Controle o saldo em caixa e missões realizadas.</li>
-        </ul>
+    <h1 style="margin-bottom: 20px;">Painel Geral do CFP BM</h1>
+    
+    <div class="dashboard-grid">
+        <!-- Progresso do Curso -->
+        <div class="card full-width">
+            <h2>Evolução Geral do Curso</h2>
+            <div class="progress-bg">
+                <div class="progress-fill" style="width: {{ progresso }}%;"></div>
+                <span class="progress-text">{{ progresso | round(1) }}% Concluído</span>
+            </div>
+        </div>
+
+        <!-- Avisos e Missões -->
+        <div>
+            <div class="card" style="border-top: 4px solid #ffc107; height: 200px; overflow-y: auto;">
+                <h3><span style="font-size: 1.2em;">🔔</span> Últimos Avisos</h3>
+                {% for aviso in avisos %}
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <span class="text-muted">{{ aviso.data }}</span>
+                    <h4 style="margin: 5px 0;">{{ aviso.titulo }}</h4>
+                    <p style="margin: 0; font-size: 0.95em;">{{ aviso.texto }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="card" style="border-top: 4px solid #17a2b8; height: 200px; overflow-y: auto;">
+                <h3><span style="font-size: 1.2em;">🚁</span> Últimas Missões Cumpridas</h3>
+                <ul style="padding-left: 20px;">
+                {% for missao in missoes %}
+                    <li style="margin-bottom: 10px;">
+                        <strong>{{ missao.data }}</strong> - {{ missao.descricao }}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Carga Horária e Ranking -->
+        <div>
+            <div class="card" style="border-top: 4px solid #28a745;">
+                <h3>Resumo de Carga Horária</h3>
+                <table>
+                    <tr><th>Matéria</th><th>Progresso</th></tr>
+                    {% for hr in horas %}
+                    <tr>
+                        <td style="font-size: 0.9em;">{{ hr.materia }}</td>
+                        <td style="width: 50%;">
+                            <div class="progress-bg" style="height: 15px; margin-top:0;">
+                                {% set pct = (hr.realizadas / hr.total * 100) %}
+                                <div class="progress-fill" style="width: {{ pct }}%; background-color: #28a745;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- Ranking de Alunos -->
+        <div class="card full-width" style="border-top: 4px solid #ba1a1a;">
+            <h3>Ranking de Alunos (Classificação)</h3>
+            <p class="text-muted">Clique em um aluno para abrir a ficha completa e ver os índices do TAF.</p>
+            <table>
+                <tr>
+                    <th style="width: 50px; text-align: center;">Pos.</th>
+                    <th>Nome do Aluno</th>
+                    <th>Média Geral (Teórica)</th>
+                </tr>
+                {% for aluno in ranking %}
+                <tr class="row-hover" onclick="window.location.href='/aluno/{{ aluno.id }}'">
+                    <td style="text-align: center; font-weight: bold; color: #ba1a1a;">{{ loop.index }}º</td>
+                    <td>{{ aluno.nome }}</td>
+                    <td><strong>{{ aluno.media }}</strong></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock %}
