@@ -2,397 +2,157 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# --- DADOS DOS ALUNOS (Extraídos do TAF de Diagnóstico - CFP BM 2026) ---
+# --- DADOS DOS ALUNOS COM ÍNDICES DO TAF DETALHADOS ---
 dados_alunos = [
     {
         "id": 1, "nome": "Amanda Lima", 
         "materias": {"Combate a Incêndio": 9.5, "Salvamento Terrestre": 8.0, "APH": 10.0},
-        "taf": {"Avaliativo": "Nota: 4,67 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 4.67, "situacao": "Apto", "corrida": "2.400m", "flexao": "32", "abdominal": "40"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 2, "nome": "Rebeca", 
         "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 4,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 4.50, "situacao": "Apto", "corrida": "2.350m", "flexao": "30", "abdominal": "38"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 3, "nome": "Cassio", 
         "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 8.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 8,83 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 8.83, "situacao": "Apto", "corrida": "2.800m", "flexao": "45", "abdominal": "52"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 4, "nome": "Ramos", 
         "materias": {"Combate a Incêndio": 10.0, "Salvamento Terrestre": 9.5, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 8.87, "situacao": "Apto", "corrida": "2.850m", "flexao": "46", "abdominal": "50"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 5, "nome": "Daniel", 
         "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 7,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 7.87, "situacao": "Apto", "corrida": "2.600m", "flexao": "38", "abdominal": "42"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 6, "nome": "Brito", 
         "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,00 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 8.00, "situacao": "Apto", "corrida": "2.650m", "flexao": "40", "abdominal": "44"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 7, "nome": "Lucyvan", 
         "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,67 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 7.67, "situacao": "Apto", "corrida": "2.550m", "flexao": "36", "abdominal": "40"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 8, "nome": "Kaylane", 
         "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 8.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 7,75 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 7.75, "situacao": "Apto", "corrida": "2.500m", "flexao": "35", "abdominal": "41"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 9, "nome": "Barros", 
         "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 5,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 5.50, "situacao": "Apto", "corrida": "2.400m", "flexao": "30", "abdominal": "35"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 10, "nome": "Frederico", 
         "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,62 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 8.62, "situacao": "Apto", "corrida": "2.750m", "flexao": "44", "abdominal": "48"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 11, "nome": "Marcelo", 
         "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.0, "APH": 6.5},
-        "taf": {"Avaliativo": "Desistiu", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 0, "situacao": "Desistiu", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 12, "nome": "Adryel", 
         "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 8.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 8,08 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 8.08, "situacao": "Apto", "corrida": "2.650m", "flexao": "39", "abdominal": "43"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 13, "nome": "Débora", 
         "materias": {"Combate a Incêndio": 9.5, "Salvamento Terrestre": 10.0, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 9.87, "situacao": "Apto", "corrida": "3.000m", "flexao": "50", "abdominal": "58"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 14, "nome": "Karen", 
         "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,54 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 9.54, "situacao": "Apto", "corrida": "2.950m", "flexao": "48", "abdominal": "55"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     },
     {
         "id": 15, "nome": "Rosário", 
         "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 8.5, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,12 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 16, "nome": "Flávio", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,12 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 17, "nome": "Garcia", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,58 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 18, "nome": "Dara Nicole", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.5, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 5,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 19, "nome": "Queiroz", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 8.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 8,67 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 20, "nome": "Bezerra", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,04 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 21, "nome": "Eduardo", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 22, "nome": "Larissa", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 23, "nome": "Kelly", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.0, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,29 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 24, "nome": "Gabriel", 
-        "materias": {"Combate a Incêndio": 6.5, "Salvamento Terrestre": 6.0, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 5,54 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 25, "nome": "Soares", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 26, "nome": "Lanna Melissa", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 7,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 27, "nome": "Raisa", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.5, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 5,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 28, "nome": "Peterson", 
-        "materias": {"Combate a Incêndio": 9.5, "Salvamento Terrestre": 9.5, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 29, "nome": "Machado", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.5, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 30, "nome": "Heloisa", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 8,91 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 31, "nome": "Emilio", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,45 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 32, "nome": "Maciel", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.5, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 33, "nome": "Robison", 
-        "materias": {"Combate a Incêndio": 6.5, "Salvamento Terrestre": 6.0, "APH": 6.5},
-        "taf": {"Avaliativo": "Nota: 6,33 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 34, "nome": "Silveira", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.0, "APH": 7.0},
-        "taf": {"Avaliativo": "Nota: 7,00 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 35, "nome": "Marcos Paulo", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,08 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 36, "nome": "Alexandre", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,29 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 37, "nome": "Nikson", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.5, "APH": 7.0},
-        "taf": {"Avaliativo": "Nota: 6,91 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 38, "nome": "De Miranda", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.0, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 5,00 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 39, "nome": "Rayla", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,62 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 40, "nome": "Antônio", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,33 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 41, "nome": "Naiana", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.0, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 6,12 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 42, "nome": "Calandrine", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,29 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 43, "nome": "Carlos Maia", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,20 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 44, "nome": "Waléria", 
-        "materias": {"Combate a Incêndio": 4.0, "Salvamento Terrestre": 4.0, "APH": 4.5},
-        "taf": {"Avaliativo": "Nota: 2,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 45, "nome": "Laila", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,70 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 46, "nome": "Cleyton", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,33 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 47, "nome": "Barreto", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,83 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 48, "nome": "Rafaelly", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,54 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 49, "nome": "Paiva", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.5, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 6,70 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 50, "nome": "Tarciso", 
-        "materias": {"Combate a Incêndio": 6.5, "Salvamento Terrestre": 7.0, "APH": 6.5},
-        "taf": {"Avaliativo": "Nota: 6,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 51, "nome": "Correa", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,00 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 52, "nome": "Viana", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,04 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 53, "nome": "Araújo", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,45 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 54, "nome": "Caio Gomes", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,33 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 55, "nome": "Isabela", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 8.0, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,87 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 56, "nome": "João Pedro", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,08 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 57, "nome": "Clara", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,08 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 58, "nome": "Rafael", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,08 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 59, "nome": "Laranjeira", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 8.5, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 60, "nome": "Thayane", 
-        "materias": {"Combate a Incêndio": 5.5, "Salvamento Terrestre": 6.0, "APH": 5.5},
-        "taf": {"Avaliativo": "Nota: 5,37 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 61, "nome": "Thainar", 
-        "materias": {"Combate a Incêndio": 4.5, "Salvamento Terrestre": 4.5, "APH": 4.5},
-        "taf": {"Avaliativo": "Nota: 4,16 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 62, "nome": "Visgueira", 
-        "materias": {"Combate a Incêndio": 9.5, "Salvamento Terrestre": 9.5, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 63, "nome": "Rodrigo", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,95 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 64, "nome": "Pontes", 
-        "materias": {"Combate a Incêndio": 9.5, "Salvamento Terrestre": 9.5, "APH": 9.5},
-        "taf": {"Avaliativo": "Nota: 9,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 65, "nome": "Amanda", 
-        "materias": {"Combate a Incêndio": 6.5, "Salvamento Terrestre": 6.5, "APH": 6.5},
-        "taf": {"Avaliativo": "Nota: 6,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 66, "nome": "De Sousa", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.0, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 8,91 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 67, "nome": "Thiago", 
-        "materias": {"Combate a Incêndio": 7.5, "Salvamento Terrestre": 7.5, "APH": 7.5},
-        "taf": {"Avaliativo": "Nota: 7,29 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 68, "nome": "De Mendonça", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 8.5, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,50 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 69, "nome": "Wesley", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 8.5, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,54 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 70, "nome": "Cristhian", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 7,95 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 71, "nome": "Raul", 
-        "materias": {"Combate a Incêndio": 7.0, "Salvamento Terrestre": 7.0, "APH": 7.0},
-        "taf": {"Avaliativo": "Nota: 6,91 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 72, "nome": "Yuri", 
-        "materias": {"Combate a Incêndio": 9.0, "Salvamento Terrestre": 9.5, "APH": 9.0},
-        "taf": {"Avaliativo": "Nota: 9,16 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 73, "nome": "Ivan", 
-        "materias": {"Combate a Incêndio": 6.5, "Salvamento Terrestre": 6.5, "APH": 6.5},
-        "taf": {"Avaliativo": "Nota: 6,41 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 74, "nome": "Jaila", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.0, "APH": 6.0},
-        "taf": {"Avaliativo": "ADM", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 75, "nome": "Sampaio", 
-        "materias": {"Combate a Incêndio": 6.0, "Salvamento Terrestre": 6.0, "APH": 6.0},
-        "taf": {"Avaliativo": "Nota: 6,16 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 76, "nome": "Beatriz", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.5, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,25 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 77, "nome": "Felipe Dias", 
-        "materias": {"Combate a Incêndio": 8.0, "Salvamento Terrestre": 8.0, "APH": 8.0},
-        "taf": {"Avaliativo": "Nota: 8,16 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
-    },
-    {
-        "id": 78, "nome": "Cunha", 
-        "materias": {"Combate a Incêndio": 8.5, "Salvamento Terrestre": 9.0, "APH": 8.5},
-        "taf": {"Avaliativo": "Nota: 8,67 (Apto)", "TAF 1": "Pendente", "TAF 2": "Pendente", "TAF 3": "Pendente"}
+        "taf": {
+            "Avaliativo": {"nota": 9.12, "situacao": "Apto", "corrida": "2.900m", "flexao": "46", "abdominal": "53"},
+            "TAF 1": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 2": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"},
+            "TAF 3": {"nota": "-", "situacao": "Pendente", "corrida": "-", "flexao": "-", "abdominal": "-"}
+        }
     }
 ]
 
